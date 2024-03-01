@@ -1,0 +1,43 @@
+[package]
+name = "ap"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+embassy-embedded-hal = { workspace = true }
+embassy-executor = { workspace = true, features = [
+    "defmt",                 # the trait `Format` is not implemented for `SpawnError`
+    "task-arena-size-32768", # Writing completed, but LED does not blink -> Used embassy_executor::task
+    "arch-cortex-m",         # Used embassy_executor::main
+    "executor-thread",       # Used embassy_executor::main
+    "integrated-timers",     # rust-lld: error: undefined symbol: _embassy_time_schedule_wake
+] }
+embassy-time = { workspace = true }
+embassy-rp = { workspace = true, features = [
+    "critical-section-impl", # rust-lld: error: undefined symbol: _critical_section_1_0_acquire
+    "time-driver",           # undefined symbol: _embassy_time_now
+] }
+embassy-net = { workspace = true, features = [
+    "tcp",
+    "dhcpv4", # ipv4
+] }
+
+cyw43 = { workspace = true }
+cyw43-pio = { workspace = true }
+
+cortex-m = { workspace = true }    # Used embassy_executor::main
+cortex-m-rt = { workspace = true } # Used embassy_executor::main
+
+static_cell = { workspace = true }
+portable-atomic = { workspace = true, features = [
+    "critical-section", # no method named `compare_exchange` found for struct `portable_atomic::AtomicBool` in the current scope
+] }
+
+heapless = { workspace = true }
+
+defmt = { workspace = true }
+defmt-rtt = { workspace = true }
+
+panic-probe = { workspace = true }
