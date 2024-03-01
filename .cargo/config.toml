@@ -1,0 +1,6 @@
+[target.'cfg(all(target_arch = "arm", target_os = "none"))']
+runner = "elf2uf2-rs -d"
+
+[build]
+# Set the default target to match the Cortex-M0+ in the RP2040
+target = "thumbv6m-none-eabi"
